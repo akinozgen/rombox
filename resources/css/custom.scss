@@ -1,0 +1,159 @@
+// Design Tokens
+:root {
+    // Colors
+    --color-primary: 147 51 234; // Purple
+    --color-secondary: 236 72 153; // Pink
+    --bg-page: 8 8 12; // Koyu arkaplan
+    --bg-card: 24 24 38; // Koyu mor-gri kart arkaplanı
+
+    // Background
+    --bg-card-from: 15 15 20; // Kart gradient başlangıç
+    --bg-card-to: 17 24 39; // Kart gradient bitiş
+
+    // Text
+    --text-primary: 255 255 255; // Beyaz
+    --text-secondary: 255 255 255; // Beyaz with opacity
+}
+
+// Base Styles
+@layer base {
+    body {
+        @apply bg-[rgb(var(--bg-page))] text-white/70 antialiased;
+    }
+}
+
+// Components
+@layer components {
+    .glass-card {
+        @apply relative overflow-hidden rounded-2xl border border-white/5 p-8 shadow-lg select-auto transition-all;
+        @apply bg-[#181826];
+
+        .glow-border {
+            @apply absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 pointer-events-none;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y),
+                    rgba(255, 255, 255, 0.2),
+                    transparent 40%);
+        }
+
+        .inner-card {
+            @apply absolute inset-[2px] rounded-xl pointer-events-none;
+            @apply bg-[#181826];
+        }
+
+        &:hover {
+            @apply border-white/10 shadow-xl shadow-black/30;
+
+            .glow-border {
+                @apply opacity-100;
+            }
+        }
+
+        // Card Title
+        h2 {
+            @apply text-white font-semibold;
+        }
+
+        // Card Content
+        p {
+            @apply text-white/70 mb-6;
+        }
+
+        // Card Links
+        a {
+            @apply relative z-10;
+        }
+    }
+
+    .nav-link {
+        @apply rounded-xl bg-[rgb(var(--bg-card))] px-4 py-2 text-white/80 transition-all;
+
+        &:hover {
+            @apply bg-[rgb(var(--bg-card))] text-white shadow-lg shadow-purple-500/10;
+        }
+    }
+
+    // Typography
+    .heading-gradient {
+        @apply bg-gradient-to-r from-[rgb(var(--color-primary))] to-[rgb(var(--color-secondary))] bg-clip-text text-transparent;
+    }
+
+    // Interactive Elements
+    .btn-primary {
+        @apply rounded-xl bg-[rgb(var(--color-primary))] px-6 py-2.5 text-white transition-all hover:bg-[rgb(var(--color-primary))/90] hover:shadow-lg hover:shadow-[rgb(var(--color-primary))/20];
+    }
+
+    .btn-secondary {
+        @apply rounded-xl border border-[rgb(var(--color-primary))/20] bg-[rgb(var(--bg-card))] px-6 py-2.5 text-white transition-all hover:border-[rgb(var(--color-primary))/30] hover:shadow-lg hover:shadow-[rgb(var(--color-primary))/10];
+    }
+
+    // Mouse gradient'in altındaki içeriğin tıklanabilir olması için
+    #mouse-gradient {
+        pointer-events: none;
+        z-index: -1;
+
+        * {
+            pointer-events: none;
+        }
+    }
+
+    // Organik gradient arkaplan
+    .organic-gradient {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            inset: -100%;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(147, 51, 234, 0.12), transparent 70%),
+                radial-gradient(circle at 0% 50%, rgba(236, 72, 153, 0.1), transparent 70%),
+                radial-gradient(circle at 100% 50%, rgba(147, 51, 234, 0.12), transparent 70%),
+                radial-gradient(circle at 50% 100%, rgba(236, 72, 153, 0.1), transparent 70%);
+            filter: blur(100px);
+            animation: gradientMovement1 45s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        &::after {
+            background:
+                radial-gradient(circle at 0% 0%, rgba(147, 51, 234, 0.1), transparent 70%),
+                radial-gradient(circle at 100% 0%, rgba(236, 72, 153, 0.1), transparent 70%),
+                radial-gradient(circle at 100% 100%, rgba(147, 51, 234, 0.1), transparent 70%),
+                radial-gradient(circle at 0% 100%, rgba(236, 72, 153, 0.1), transparent 70%);
+            animation: gradientMovement2 50s ease-in-out infinite;
+            filter: blur(120px);
+        }
+    }
+
+    @keyframes gradientMovement1 {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+
+        50% {
+            transform: translate(5%, 5%) scale(1.1);
+        }
+
+        100% {
+            transform: translate(0, 0) scale(1);
+        }
+    }
+
+    @keyframes gradientMovement2 {
+        0% {
+            transform: translate(0, 0) scale(1.1);
+        }
+
+        50% {
+            transform: translate(-5%, -5%) scale(1);
+        }
+
+        100% {
+            transform: translate(0, 0) scale(1.1);
+        }
+    }
+}
